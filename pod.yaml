@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: gitsite
+  name: gitsite-pod
+spec:
+  containers:
+  - name: git-sync
+    image: smartbit/git-sync:v2.0.5-15-gdac3f77-dirty
+    imagePullPolicy: Always
+    volumeMounts:
+    - name: html
+      mountPath: /git
+    env:
+    - name: GIT_SYNC_REPO
+      value: https://github.com/pieterlange/secretlifeofpods.git
+    - name: GIT_SYNC_DEST
+      value: html
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: html
+      mountPath: /usr/share/nginx/
+    ports:
+    - containerPort: 80
+  volumes:
+  - name: html
+    emptyDir: {}
