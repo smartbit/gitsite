@@ -14,22 +14,21 @@ For details steps see Appendix.
 
 ## Deploy the webserver
 ```
-kubectl create -f pod.yaml
-kubectl create -f service.yaml
-watch 'kubectl get pods,deployments,services' # wait till the EXTERNAL-IP is provisioned
+kubectl apply -f secretlifeofpods.yaml
+watch 'kubectl get services,deployments,replicasets,pods,namespace' # wait till the EXTERNAL-IP is provisioned
 ```
 1. Open a browser session at http://EXTERNAL-IP.
 1. Modify the [git repo](https://github.com/pieterlange/secretlifeofpods.git) and, after a refresh, see the changes appear in the browser.
 
 # Tear down
 ```
-kubectl delete -f pod.yaml
-kubectl delete -f service.yaml
+kubectl delete -f secretlifeofpods.yaml
 gcloud container clusters delete kuar-cluster # optionally kill the cluster to prevent those pesky bills
 ```
 
 # ToDo
-- Healthchecks & readiness
+- Mutli-container deployment 
+- Healthchecks & Readiness
 - Logging (using the daemonSet `fluentd-gcp-v2.0`)
 - Update and A/C-NAME record and use LetsEncrypt to get a certificate.
 
